@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mind map</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Ruthie' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Ruge+Boogie' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lusitana' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet/less" type="text/css" href="less/style.less">
+</head>
+<body>
+<header id="logo" >
+  <h1>Mind Map</h1>
+  <p>Visualize your mind.</p>
+</header>
+
+<div class="controls">
+  <button id="save">save</button>
+</div>
+
+<section id="content">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+     preserveAspectRatio="xMidYMid slice" id = "mainSVG">
+  <circle class="helper" r="130" id="helper"></circle>
+  <g id="edges"></g>
+</svg>
+</section>
+
+
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<script src="js/less-1.2.0.min.js"></script>
+
+<script src="js/SVGHelper.js"></script>
+<script src="js/helper.js"></script>
+
+<script src="js/EventMachine.js"></script>
+<script src="js/Animation.js"></script>
+<script src="js/Node.js"></script>
+<script src="js/Canvas.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

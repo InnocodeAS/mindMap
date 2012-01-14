@@ -1,0 +1,1 @@
+var SVGHelper = function (){}
