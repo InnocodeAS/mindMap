@@ -162,7 +162,7 @@ var Canvas = function (rootSvgNode){
   };
 
   this.save = function (){
-    window.localStorage.setItem("mindMap", JSON.stringify(this_.exportToObj()));
+    return window.localStorage.setItem("mindMap", JSON.stringify(this_.exportToObj()));
   };
 
   this.load = function (){
@@ -210,5 +210,5 @@ var Canvas = function (rootSvgNode){
 }
 
 Canvas.prototype = {
-  helperRadius : 130
+  helperRadius : 80
 }
