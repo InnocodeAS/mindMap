@@ -63,7 +63,7 @@ var Canvas = function (rootSvgNode){
 
   };
 
-  function drag_ (node, config){
+  function dragNode_ (node, config){
     var position = {};
 
     function move (e){
@@ -88,7 +88,35 @@ var Canvas = function (rootSvgNode){
     }, false)
   }
 
+  function drag_ (element,config){
+    var position = {};
+
+    function move (e){
+      var offset = {};
+
+      if (!position.mouse){ position.mouse = {x : e.clientX, y: e.clientY} }
+
+      offset.x = position.mouse.x - e.clientX;
+      offset.y = position.mouse.y - e.clientY;
+      console.log(offset.x, offset.y);
+      element.setBBox (
+          {x:position.el.x - offset.x,
+           y: position.el.y - offset.y});
+    }
+
+    position.el    = element.getBBox();
+
+    document.addEventListener("mousemove", move, false);
+    document.addEventListener ("mouseup", function unbind (){
+
+      if (config && config.dragEnd){config.dragEnd(element)}
+      document.removeEventListener("mousemove", move ,   false);
+      document.removeEventListener("mouseup"  , unbind, false);
+    }, false)
+  };
+
   function diveToNode (node, func){
+    func(node);
     for (var i = 0 ; i < node.childList.length; i++){
       if (node.childList[i].childList.length){ diveToNode (node.childList[i], func); };
       func(node.childList[i]);
@@ -96,12 +124,13 @@ var Canvas = function (rootSvgNode){
   }
 
   function mouseDown_ (e){
-    var target = isTargetNode_(e.target);
-    if (target){
-      this_.setActiveNode(target);
-      drag_(target);
-
-      if (e.ctrlKey){ diveToNode (target, drag_) }
+    var targetNode = isTargetNode_(e.target);
+    if (targetNode){
+      this_.setActiveNode(targetNode);
+      if (e.ctrlKey){ diveToNode (targetNode, dragNode_);}
+      else { dragNode_(targetNode); }
+    } else {
+      diveToNode (this_.nodes[0], dragNode_)
     }
   };
 
@@ -174,12 +203,12 @@ var Canvas = function (rootSvgNode){
 
     this_.svgContainer = rootSvgNode;
 
-    this_.container.addEventListener("mousedown", mouseDown_ , false);
-    this_.container.addEventListener("mouseup", function(){
+    document.body.addEventListener("mousedown", mouseDown_ , false);
+    document.body.addEventListener("mouseup", function(){
       if (this_.activeNode) this_.setActiveNode(this_.activeNode);
     } , false);
 
-    this_.container.addEventListener("dblclick", dblclick_ , false);
+    document.body.addEventListener("dblclick", dblclick_ , false);
 
 
 
@@ -189,7 +218,9 @@ var Canvas = function (rootSvgNode){
 
     helper_.addEventListener ("mousedown", function(e){
       var newNode = this_.addNode(e.clientX, e.clientY, this_.activeNode);
-      drag_(newNode, {dragEnd: function(node){this_.setActiveNode(node)}});
+      dragNode_(newNode, {dragEnd: function(node){this_.setActiveNode(node)}});
+
+      e.stopPropagation();
     },false)
 
     window.addEventListener("keydown", function(e){
