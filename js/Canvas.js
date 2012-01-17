@@ -130,9 +130,21 @@ var Canvas = function (rootSvgNode){
       if (e.ctrlKey){ diveToNode (targetNode, dragNode_);}
       else { dragNode_(targetNode); }
     } else {
-      diveToNode (this_.nodes[0], dragNode_)
+      this_.move ();
     }
   };
+
+  this.move = function(){
+    diveToNode (this_.nodes[0], dragNode_);
+  }
+
+  this.moveTo = function(x,y){
+    diveToNode (this_.nodes[0], function(node){
+      var position = node.container.getBBox ();
+      console.log(position.x + x, position.y + y)
+      node.moveTo(position.x + x, position.y + y)
+    });
+  }
 
   this.unsetEdited = function(){
     this_.editedNode.container.classList.remove("edited");
