@@ -17,7 +17,7 @@ var Canvas = function (rootSvgNode){
     cx = cx || 450;
     cy = cy || 150;
 
-    var newNode = new Node (cx, cy);
+    var newNode = new Node (cx, cy); //Test comment
 
     newNode.bind("delete", removeFromList )
     this_.nodes.push(newNode);
